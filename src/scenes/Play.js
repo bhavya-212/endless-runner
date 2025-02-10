@@ -5,35 +5,41 @@ class Play extends Phaser.Scene{
 
     create(){
         //background image
-        this.background = this.add.tileSprite(0, 0, 640, 740, 'background').setOrigin(0,0).setScale(7);
+        this.background = this.add.tileSprite(0, 0, 640, 740, 'background').setOrigin(0,0);
         
-        //dog
-        this.dogSprite = new Dog(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'dog-left').setOrigin(0.5,0.5).setScale(3);
-
         //platform
-        // this.platform = this.physics.add.sprite(0, height/4 * 3, 'rainbow')
-        // this.platform.setX(Phaser.Math.Between(0 + this.platform.width/2, width - this.platform.width/2))
-        // this.platform.body.setImmovable(true)
-        // this.platform.body.checkCollision.down = false
-        // this.platform.body.velocity.x = 100
-        // this.platform.body.collideWorldBounds = true
-        // this.platform.setBounce(1)
+        const platforms = this.physics.add.staticGroup();
+        for (let i = 0; i < 5; i++){
+            const x = Phaser.Math.Between(150, 400);
+            const y = 150 * i;
+            const platform = platforms.create(x, y, 'rainbow');
+            platform.scale = 0.5
+            const body = platform.body;
+            body.updateFromGameObject();
+       }
+       
+       //dog
+       this.dogSprite = this.physics.add.sprite(240, 320, 'dog-left').setScale(2);
+       this.physics.add.collider(platforms, this.dogSprite);
 
-        //keys
-        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
-        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+       this.dogSprite.body.checkCollision.up = false;
+       this.dogSprite.body.checkCollision.left = false;
+       this.dogSprite.body.checkCollision.right = false;
+        
+       //keys
+       keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+       keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+       keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
     }
 
     update(){
-        //platform moving
-        // if (this.platform.x - this.platform.width/2 <= 0){
-        //     this.platform.body.velocity.x = Math.abs(this.platform.body.velocity.x)
-        // }
-        // if (this.platform.x + this.platform.width/2 >= width){
-        //     this.platform.body.velocity.x = -Math.abs(this.platform.body.velocity.x)
-        // }
         //moving  background
         this.background.tilePositionX -= 0.2;
+
+        //jumping mechanism
+        const touchDown = this.dogSprite.body.touching.down;
+        if (touchDown){
+            this.dogSprite.setVelocityY(-200);
+        }
     }
 }

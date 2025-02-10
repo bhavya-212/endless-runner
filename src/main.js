@@ -1,6 +1,6 @@
 // name: Bhavya Anil
 // game: Canine Chase
-// hours: 6 hours
+// hours: 8 hours
 // creative tilt: WRITE JUSTIFICATION
 // citations: background music from PixaBay trtasfiq
 
@@ -13,6 +13,9 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
+            gravity: {
+                y: 200
+            },
             debug: true
         }
     },
