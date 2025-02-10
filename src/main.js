@@ -1,6 +1,6 @@
 // name: Bhavya Anil
 // game: Canine Chase
-// hours: 2 hrs
+// hours: 4 hours
 // creative tilt: WRITE JUSTIFICATION
 // citations: background music from PixaBay trtasfiq
 

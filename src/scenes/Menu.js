@@ -4,10 +4,15 @@ class Menu extends Phaser.Scene{
     }
 
     preload(){
+        this.load.image('dog', './assets/dog.png');
+        this.load.image('bone', './assets/bone.png');
         this.load.audio('background-music', './assets/background-music.mp3');
     }
 
     create(){
+        this.add.image(game.config.width/2, game.config.height/2, 'dog').setOrigin(0.5,-1.2).setScale(2);
+        this.add.image(game.config.width/2, game.config.height/2, 'bone').setOrigin(1.5,-1.9).setScale(1.5);
+        this.add.image(game.config.width/2, game.config.height/2, 'bone').setOrigin(-0.5,-1.9).setScale(1.5);
         //title text
         let titleConfig = {
             fontFamily: 'Courier New',
@@ -26,13 +31,22 @@ class Menu extends Phaser.Scene{
             fixedWidth: 0
         }
 
+        //name text
+        let nameConfig = {
+            fontFamily: 'Courier New',
+            fontSize: '15px',
+            color: '#FFFFFF',
+            align: 'right',
+            fixedWidth: 0
+        }
+
         //menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*2 - borderPadding*2, 'CANINE CHASE', titleConfig).setOrigin(0.5).setDepth(1);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*2 - borderPadding*2, 'CANINE CHASE', titleConfig).setOrigin(0.5).setDepth(1).setTint(0x8B0000).setBlendMode('SCREEN');
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*2.5 - borderPadding*2, 'CANINE CHASE', titleConfig).setOrigin(0.5).setDepth(1);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*2.5 - borderPadding*2, 'CANINE CHASE', titleConfig).setOrigin(0.5).setDepth(1).setTint(0xFF0000).setBlendMode('SCREEN');
         this.add.text(game.config.width/2, game.config.height/2, 'Use ←→ arrows to move & (C) to collect treats', menuConfig).setOrigin(0.5).setDepth(1);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ↑ arrow to start', menuConfig).setOrigin(0.5).setDepth(1);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*-4 - borderPadding*-4, 'Bhavya Anil 2025', menuConfig).setOrigin(0.5).setDepth(1);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*-4 - borderPadding*-4, 'Bhavya Anil 2025', menuConfig).setOrigin(0.5).setDepth(1).setTint(0x8B0000).setBlendMode('SCREEN'); 
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*-4 - borderPadding*-4, 'Bhavya Anil 2025', nameConfig).setOrigin(0.5).setDepth(1);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*-4 - borderPadding*-4, 'Bhavya Anil 2025', nameConfig).setOrigin(0.5).setDepth(1).setTint(0x8B0000).setBlendMode('SCREEN'); 
         
         //define key
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
