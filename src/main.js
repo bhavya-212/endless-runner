@@ -9,7 +9,7 @@
 let config = {
     type: Phaser.AUTO,
     width: 640, 
-    height: 480,
+    height: 740,
     // physics: {
     //     default: 'arcade',
     //     arcade: {
@@ -20,6 +20,6 @@ let config = {
 }
 
 let game = new Phaser.Game(config);
-let keyCOLLECT, keyUP, keyLEFT, keyRIGHT;
+let keyCOLLECT, keyUP, keyDOWN, keyRIGHT;
 let borderUISize = game.config.height/15;
 let borderPadding = borderUISize/3;
