@@ -1,4 +1,12 @@
 class Play extends Phaser.Scene{
+    // defines platforms as phaser physics arcade group
+    /** @type {Phaser.Physics.Arcade.StaticGroup} */
+    platforms;
+
+    // defines dogSprite as a phaser physics arcade sprite
+    /** @type {Phaser.Physics.Arcade.Sprite} */
+    dogSprite;
+
     constructor(){
         super("playScene");
     }
@@ -18,14 +26,15 @@ class Play extends Phaser.Scene{
             const minGap = 100;
             const maxGap = 200;
             const y = Phaser.Math.Between(lastPlatformY - maxGap, lastPlatformY - minGap);
-            const platform = this.platforms.create(x, y, 'rainbow').setScale(0.7);
+            /** @type {Phaser.Physics.Arcade.Sprite} */
+            const platform = this.platforms.create(x, y, 'bone-platform');
             platform.body.updateFromGameObject();
             lastPlatformY = y;
             lastPlatformX = x;
        }
        
        //dog
-       this.dogSprite = this.physics.add.sprite(240, 320, 'dog-left').setScale(2);
+       this.dogSprite = this.physics.add.sprite(320, 370, 'dog-left').setScale(3);
        this.dogSprite.setGravityY(300);
        this.physics.add.collider(this.platforms, this.dogSprite);
 
@@ -33,11 +42,11 @@ class Play extends Phaser.Scene{
        this.dogSprite.body.checkCollision.left = true;
        this.dogSprite.body.checkCollision.right = true;
 
-       //bone
-       this.bone = this.physics.add.group({
-        classType: Bone
+       //rainbow
+       this.rainbow = this.physics.add.group({
+        classType: Rainbow
        });
-       this.physics.add.collider(this.platforms, this.bone);
+       this.physics.add.collider(this.platforms, this.rainbow);
         
        //keys
        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -50,20 +59,22 @@ class Play extends Phaser.Scene{
         this.background.tilePositionX -= 0.2;
 
         //platform
+        const scrollY = this.cameras.main.scrollY;
         this.platforms.children.iterate(child => {
+            /** @type {Phaser.Physics.Arcade.Sprite} */
             const platform = child;
-            platform.y += 1.5;
-            if (platform.y >= 740){
-                platform.y = Phaser.Math.Between(-100, -50);
+            if (platform.y >= scrollY + 700){
+                platform.y = scrollY - Phaser.Math.Between(50, 100);
                 platform.x = Phaser.Math.Between(30, 500);
                 platform.body.updateFromGameObject();
             }
+            platform.y += 1.2;
         });
 
         //jumping mechanism
         const touchDown = this.dogSprite.body.touching.down;
         if (Phaser.Input.Keyboard.JustDown(keyUP) && touchDown){
-            this.dogSprite.setVelocityY(-200);
+            this.dogSprite.setVelocityY(-350);
         }
 
         //left and right movement
@@ -77,9 +88,9 @@ class Play extends Phaser.Scene{
             this.dogSprite.setVelocityX(0);
         }
 
-        if (this.dogSprite.y > 740){
-            this.dogSprite.setY(740);
-            this.dogSprite.setVelocityY(0);
-        }
+        // if (this.dogSprite.y > 740){
+        //     this.dogSprite.setY(740);
+        //     this.dogSprite.setVelocityY(0);
+        // }
     }
 }

@@ -8,6 +8,7 @@ class Menu extends Phaser.Scene{
         this.load.image('dog-left', './assets/dog-left.png');
         this.load.image('dog-right', './assets/dog-right.png');
         this.load.image('bone', './assets/bone.png');
+        this.load.image('bone-platform', './assets/bone-platform.png');
         this.load.image('rainbow', './assets/rainbow.png');
         this.load.image('background', './assets/background.png');
         this.load.audio('background-music', './assets/background-music.mp3');
