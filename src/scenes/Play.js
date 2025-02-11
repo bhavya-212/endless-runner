@@ -9,27 +9,35 @@ class Play extends Phaser.Scene{
         
         //platform
         this.platforms = this.physics.add.staticGroup();
+        let lastPlatformY = 740;
+        let lastPlatformX = 320;
         for (let i = 0; i < 5; i++){
-            const x = Phaser.Math.Between(150, 400);
-            const y = 150 * i;
-            const platform = this.platforms.create(x, y, 'rainbow');
-            platform.scale = 0.7
-            const body = platform.body;
-            body.updateFromGameObject();
+            const minX = lastPlatformX - 150;
+            const maxX = lastPlatformX + 150;
+            const x = Phaser.Math.Between(minX, maxX);
+            const minGap = 100;
+            const maxGap = 200;
+            const y = Phaser.Math.Between(lastPlatformY - maxGap, lastPlatformY - minGap);
+            const platform = this.platforms.create(x, y, 'rainbow').setScale(0.7);
+            platform.body.updateFromGameObject();
+            lastPlatformY = y;
+            lastPlatformX = x;
        }
        
        //dog
        this.dogSprite = this.physics.add.sprite(240, 320, 'dog-left').setScale(2);
-       this.dogSprite.setGravity(300);
+       this.dogSprite.setGravityY(300);
        this.physics.add.collider(this.platforms, this.dogSprite);
 
-       this.dogSprite.body.checkCollision.up = false;
-       this.dogSprite.body.checkCollision.left = false;
-       this.dogSprite.body.checkCollision.right = false;
+       this.dogSprite.body.checkCollision.up = true;
+       this.dogSprite.body.checkCollision.left = true;
+       this.dogSprite.body.checkCollision.right = true;
 
        //bone
-       const bone = new Bone(this, 340, 320, 'bone');
-       this.add.existing(bone);
+       this.bone = this.physics.add.group({
+        classType: Bone
+       });
+       this.physics.add.collider(this.platforms, this.bone);
         
        //keys
        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -47,25 +55,25 @@ class Play extends Phaser.Scene{
             platform.y += 1.5;
             if (platform.y >= 740){
                 platform.y = Phaser.Math.Between(-100, -50);
-                platform.x = Phaser.Math.Between(150, 400);
+                platform.x = Phaser.Math.Between(30, 500);
                 platform.body.updateFromGameObject();
             }
         });
 
         //jumping mechanism
         const touchDown = this.dogSprite.body.touching.down;
-        if (touchDown && keyUP.isDown){
+        if (Phaser.Input.Keyboard.JustDown(keyUP) && touchDown){
             this.dogSprite.setVelocityY(-200);
         }
 
         //left and right movement
-        if (Phaser.Input.Keyboard.JustDown(keyLEFT) && !touchDown){
+        if (Phaser.Input.Keyboard.JustDown(keyLEFT) && touchDown){
             this.dogSprite.setVelocityX(-800);
         }
-        else if (Phaser.Input.Keyboard.JustDown(keyRIGHT) && !touchDown){
+        else if (Phaser.Input.Keyboard.JustDown(keyRIGHT) && touchDown){
             this.dogSprite.setVelocityX(800);
         }
-        else{
+        else if (!Phaser.Input.Keyboard.JustDown(keyLEFT) && !Phaser.Input.Keyboard.JustDown(keyRIGHT)){
             this.dogSprite.setVelocityX(0);
         }
 
