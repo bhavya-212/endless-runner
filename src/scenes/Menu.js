@@ -5,16 +5,33 @@ class Menu extends Phaser.Scene{
 
     preload(){
         this.load.image('dog', './assets/dog.png');
-        this.load.image('dog-left', './assets/dog-left.png');
-        this.load.image('dog-right', './assets/dog-right.png');
         this.load.image('bone', './assets/bone.png');
         this.load.image('bone-platform', './assets/bone-platform.png');
         this.load.image('rainbow', './assets/rainbow.png');
         this.load.image('background', './assets/background.png');
         this.load.audio('background-music', './assets/background-music.mp3');
+        this.load.path = './assets/';
+        this.load.spritesheet('dog', 'dog-sheet.png', {
+            frameWidth: 32,
+            frameHeight: 32,
+        });
     }
 
     create(){
+         //dog spritesheet
+         this.anims.create({
+            key: 'dog-left',
+            frameRate: 8,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('dog', {start: 1, end: 0}),
+        });
+        this.anims.create({
+            key: 'dog-right',
+            frameRate: 8,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('dog', {start: 3, end: 2}),
+        });
+
         // dog and bone sprites
         this.add.image(game.config.width/2, game.config.height/2, 'dog').setOrigin(0.5,-2.7).setScale(2);
         this.add.image(game.config.width/2, game.config.height/2, 'bone').setOrigin(1.5,-3.8).setScale(1.5);

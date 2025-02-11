@@ -34,7 +34,7 @@ class Play extends Phaser.Scene{
        }
        
        //dog
-       this.dogSprite = this.physics.add.sprite(320, 370, 'dog-left').setScale(3);
+       this.dogSprite = new Dog(this, 320, 370, 'dog', 0, 'dog-left').setScale(3);
        this.dogSprite.setGravityY(300);
        this.physics.add.collider(this.platforms, this.dogSprite);
 
