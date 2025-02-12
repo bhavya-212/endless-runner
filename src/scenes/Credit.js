@@ -4,8 +4,11 @@ class Credit extends Phaser.Scene{
     }
 
     create(){
-         //title text
-         let titleConfig = {
+         //sprites
+         this.add.image(game.config.width/2, game.config.height/2, 'rainbow').setOrigin(0.5, 0.7).setScale(1);
+         this.add.image(game.config.width/2, game.config.height/2, 'dog-head').setOrigin(0.5,1.2).setScale(2);
+        //title text
+        let titleConfig = {
             fontFamily: 'Courier New',
             fontSize: '50px',
             color: '#FFFFFF',
@@ -23,9 +26,10 @@ class Credit extends Phaser.Scene{
         }
 
         //credits text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*2.5 - borderPadding*2, 'CREDITS', titleConfig).setOrigin(0.5).setDepth(1);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*2.5 - borderPadding*2, 'CREDITS', titleConfig).setOrigin(0.5).setDepth(1).setTint(0xFF0000).setBlendMode('SCREEN');
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*4 - borderPadding*2, 'CREDITS', titleConfig).setOrigin(0.5).setDepth(1);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*4 - borderPadding*2, 'CREDITS', titleConfig).setOrigin(0.5).setDepth(1).setTint(0xFF0000).setBlendMode('SCREEN');
         this.add.text(game.config.width/2, game.config.height/2, 'Background music by trtasfiq from PixaBay', creditsConfig).setOrigin(0.5).setDepth(1);
+        this.add.text(game.config.width/2, game.config.height/2, 'Menu music by soundbay from PixaBay', creditsConfig).setOrigin(0.5, -0.6).setDepth(1);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ↑ arrow for menu', creditsConfig).setOrigin(0.5).setDepth(1);
 
          //define key

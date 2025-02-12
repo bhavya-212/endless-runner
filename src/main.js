@@ -1,5 +1,5 @@
 // name: Bhavya Anil
-// game: Canine Chase
+// game: Rainbow Bridge
 // hours: 19 hours
 // creative tilt: WRITE JUSTIFICATION
 
