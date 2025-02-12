@@ -12,6 +12,8 @@ class Menu extends Phaser.Scene{
         this.load.audio('background-music', './assets/background-music.mp3');
         this.load.audio('menu-music', './assets/menu-music.mp3');
         this.load.audio('credit-music', './assets/credit-music.mp3');
+        this.load.audio('jump-music', './assets/jump.wav');
+        this.load.audio('lose-music', './assets/lose.wav');
         this.load.path = './assets/';
         // this.load.spritesheet('dog', 'dog-sheet.png', {
         //     frameWidth: 32,
@@ -87,6 +89,9 @@ class Menu extends Phaser.Scene{
     update(){
         if (Phaser.Input.Keyboard.JustDown(keyUP)){
             this.menuMusic.stop();
+            game.settings = {
+                gameTimer: 60000
+            }
             this.scene.start('playScene');
         }
         if (Phaser.Input.Keyboard.JustDown(keyDOWN)){

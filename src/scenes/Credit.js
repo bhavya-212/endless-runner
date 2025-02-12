@@ -39,6 +39,7 @@ class Credit extends Phaser.Scene{
         this.add.text(game.config.width/2, game.config.height/2, 'Background music by Denys_Brodovskyi from PixaBay', creditsConfig).setOrigin(0.5).setDepth(1);
         this.add.text(game.config.width/2, game.config.height/2 + borderPadding, 'Menu music by Soundbay from PixaBay', creditsConfig).setOrigin(0.5, -0.3).setDepth(1);
         this.add.text(game.config.width/2, game.config.height/2 + borderPadding, 'Credit music by Good_B_Music from PixaBay', creditsConfig).setOrigin(0.5, -2).setDepth(1);
+        this.add.text(game.config.width/2, game.config.height/2 + borderPadding, 'Jump and Explosion music by Leshy SFDesigner', creditsConfig).setOrigin(0.5, -3.6).setDepth(1);
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ↑ arrow for menu', credits1Config).setOrigin(0.5, -6).setDepth(1);
 
          //define key
