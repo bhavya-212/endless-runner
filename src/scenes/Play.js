@@ -13,34 +13,31 @@ class Play extends Phaser.Scene{
 
     create(){
         //background image
-        this.background = this.add.tileSprite(0, 0, 640, 740, 'background').setOrigin(0,0);
+        this.background = this.add.tileSprite(0, 0, 640, 740, 'background').setOrigin(0,0).setScrollFactor(1,0);
         
         //platform
         this.platforms = this.physics.add.staticGroup();
-        let lastPlatformY = 740;
-        let lastPlatformX = 320;
         for (let i = 0; i < 5; i++){
-            const minX = lastPlatformX - 150;
-            const maxX = lastPlatformX + 150;
-            const x = Phaser.Math.Between(minX, maxX);
-            const minGap = 100;
-            const maxGap = 200;
-            const y = Phaser.Math.Between(lastPlatformY - maxGap, lastPlatformY - minGap);
+            const x = Phaser.Math.Between(80, 400);
+            const y = 150 * i;
             /** @type {Phaser.Physics.Arcade.Sprite} */
             const platform = this.platforms.create(x, y, 'bone-platform');
-            platform.body.updateFromGameObject();
-            lastPlatformY = y;
-            lastPlatformX = x;
+            /** @type {Phaser.Physics.Arcade.Sprite} */
+            const body = platform.body;
+            body.updateFromGameObject();
        }
        
        //dog
-       this.dogSprite = new Dog(this, 320, 370, 'dog', 0, 'dog-left').setScale(3);
-       this.dogSprite.setGravityY(300);
+       //this.dogSprite = new Dog(this, 320, 370, 'dog', 0, 'dog-left').setScale(3);
+       this.dogSprite = this.physics.add.sprite(240, 320, 'dog-head').setScale(3);
+       //this.dogSprite.setGravityY(300);
        this.physics.add.collider(this.platforms, this.dogSprite);
 
-       this.dogSprite.body.checkCollision.up = true;
-       this.dogSprite.body.checkCollision.left = true;
-       this.dogSprite.body.checkCollision.right = true;
+       this.dogSprite.body.checkCollision.up = false;
+       this.dogSprite.body.checkCollision.left = false;
+       this.dogSprite.body.checkCollision.right = false;
+       
+       this.cameras.main.startFollow(this.dogSprite);
 
        //rainbow
        this.rainbow = this.physics.add.group({
@@ -59,22 +56,20 @@ class Play extends Phaser.Scene{
         this.background.tilePositionX -= 0.2;
 
         //platform
-        const scrollY = this.cameras.main.scrollY;
         this.platforms.children.iterate(child => {
             /** @type {Phaser.Physics.Arcade.Sprite} */
             const platform = child;
+            const scrollY = this.cameras.main.scrollY;
             if (platform.y >= scrollY + 700){
                 platform.y = scrollY - Phaser.Math.Between(50, 100);
-                platform.x = Phaser.Math.Between(30, 500);
                 platform.body.updateFromGameObject();
             }
-            platform.y += 1.2;
         });
 
         //jumping mechanism
         const touchDown = this.dogSprite.body.touching.down;
-        if (Phaser.Input.Keyboard.JustDown(keyUP) && touchDown){
-            this.dogSprite.setVelocityY(-350);
+        if (touchDown){
+            this.dogSprite.setVelocityY(-300);
         }
 
         //left and right movement
@@ -87,10 +82,5 @@ class Play extends Phaser.Scene{
         else if (!Phaser.Input.Keyboard.JustDown(keyLEFT) && !Phaser.Input.Keyboard.JustDown(keyRIGHT)){
             this.dogSprite.setVelocityX(0);
         }
-
-        // if (this.dogSprite.y > 740){
-        //     this.dogSprite.setY(740);
-        //     this.dogSprite.setVelocityY(0);
-        // }
     }
 }
