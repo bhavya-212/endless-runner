@@ -11,6 +11,7 @@ class Menu extends Phaser.Scene{
         this.load.image('background', './assets/background.png');
         this.load.audio('background-music', './assets/background-music.mp3');
         this.load.audio('menu-music', './assets/menu-music.mp3');
+        this.load.audio('credit-music', './assets/credit-music.mp3');
         this.load.path = './assets/';
         // this.load.spritesheet('dog', 'dog-sheet.png', {
         //     frameWidth: 32,
@@ -79,7 +80,7 @@ class Menu extends Phaser.Scene{
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 
         //menu music
-        this.menuMusic = this.sound.add('menu-music', {volume: 0.3, loop: true});
+        this.menuMusic = this.sound.add('menu-music', {volume: 0.5, loop: true});
         this.menuMusic.play();
     }
 

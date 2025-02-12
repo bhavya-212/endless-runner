@@ -4,6 +4,9 @@ class Play extends Phaser.Scene{
     }
 
     create(){
+        //background music
+       let backgroundMusic = this.sound.play('background-music', {volume: 0.1, loop: true});
+
         //background image
         this.background = this.add.tileSprite(0, 0, 640, 740, 'background').setOrigin(0,0).setScrollFactor(1,0);
         
@@ -39,9 +42,6 @@ class Play extends Phaser.Scene{
        keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-
-       //background music
-       let backgroundMusic = this.sound.play('background-music', {volume: 0.05, loop: true});
     }
 
     update(){
