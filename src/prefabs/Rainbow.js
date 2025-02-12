@@ -5,8 +5,7 @@ class Rainbow extends Phaser.Physics.Arcade.Sprite{
         this.setScale(0.2);
     }
 
-
     update(){
-
+        
     }
 }

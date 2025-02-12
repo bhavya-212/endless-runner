@@ -1,8 +1,7 @@
 // name: Bhavya Anil
 // game: Canine Chase
-// hours: 18 hours
+// hours: 19 hours
 // creative tilt: WRITE JUSTIFICATION
-// citations: background music from PixaBay trtasfiq
 
 'use strict'
 
@@ -19,10 +18,10 @@ let config = {
             debug: true
         }
     },
-    scene: [Menu, Play]
+    scene: [Menu, Play, Credit]
 }
 
 let game = new Phaser.Game(config);
-let keyUP, keyLEFT, keyRIGHT;
+let keyUP, keyLEFT, keyRIGHT, keyDOWN;
 let borderUISize = game.config.height/15;
 let borderPadding = borderUISize/3;

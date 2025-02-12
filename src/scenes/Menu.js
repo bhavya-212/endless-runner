@@ -68,17 +68,21 @@ class Menu extends Phaser.Scene{
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize*2.5 - borderPadding*2, 'CANINE CHASE', titleConfig).setOrigin(0.5).setDepth(1);
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize*2.5 - borderPadding*2, 'CANINE CHASE', titleConfig).setOrigin(0.5).setDepth(1).setTint(0xFF0000).setBlendMode('SCREEN');
         this.add.text(game.config.width/2, game.config.height/2, 'Use ←→ arrows to move and ↑ arrow to jump', menuConfig).setOrigin(0.5).setDepth(1);
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ↑ arrow to start', menuConfig).setOrigin(0.5).setDepth(1);
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ↑ arrow to start and ↓ for credits', menuConfig).setOrigin(0.5).setDepth(1);
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize*-4 - borderPadding*-4, 'Bhavya Anil 2025', nameConfig).setOrigin(0.5).setDepth(1);
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize*-4 - borderPadding*-4, 'Bhavya Anil 2025', nameConfig).setOrigin(0.5).setDepth(1).setTint(0x8B0000).setBlendMode('SCREEN'); 
         
         //define key
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
     }
 
     update(){
         if (Phaser.Input.Keyboard.JustDown(keyUP)){
             this.scene.start('playScene');
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyDOWN)){
+            this.scene.start('creditScene');
         }
     }
 }
