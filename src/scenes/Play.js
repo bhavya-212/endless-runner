@@ -5,27 +5,12 @@ class Play extends Phaser.Scene{
 
     create(){
         //music
-        this.loseMusic = this.sound.add('lose-music', {volume: 0.2});
+        this.loseMusic = this.sound.add('lose-music', {volume: 0.6});
         this.loseMusicPlaying = false;
        
         //background image
-        this.background = this.add.tileSprite(0, 0, 640, 740, 'background').setOrigin(0,0).setScrollFactor(1,0);
-        this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x000000).setOrigin(0,0);
-
-        //score
-        this.score = 0;
-        this.highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
-        this.gameOver = false;
-
-        //display score
-        let scoreConfig = {
-            fontFamily: 'Courier New',
-            fontSize: '20px',
-            color: '#FFFFFF',
-            align: 'right'
-        }
-
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, `Score: ${this.score}`, scoreConfig);
+        this.backgroundDay = this.add.tileSprite(0, 0, 640, 740, 'background').setOrigin(0,0).setScrollFactor(1,0);
+        this.backgroundNight = this.add.tileSprite(0, 0, 640, 740, 'background-night').setOrigin(0, 0).setScrollFactor(1, 0).setAlpha(0); // Initially hidden
 
         //background looping music
         this.backgroundMusic = this.sound.add('background-music', {volume: 0.2, loop: true});
@@ -74,6 +59,75 @@ class Play extends Phaser.Scene{
         callbackScope: this,
         loop: true
        });
+
+       this.add.rectangle(0, borderUISize + borderPadding*0.2, game.config.width, borderUISize, 0x000000).setOrigin(0,0);
+
+       //score
+       this.score = 0;
+       this.highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
+       this.gameOver = false;
+
+       //display score
+       let scoreConfig = {
+           fontFamily: 'Courier New',
+           fontSize: '20px',
+           color: '#FFFFFF',
+           align: 'right'
+       }
+
+       this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*1.5, `Score: ${this.score}`, scoreConfig);
+
+       //background cycle
+       this.dayTime = true; 
+       this.time.addEvent({
+           delay: 30000,  
+           callback: this.switchBackground,
+           callbackScope: this,
+           loop: true
+       });
+    }
+
+    // Increase platform speed over time
+    increaseSpeed() {
+        this.platformSpeed += 0.5;
+    }
+
+    //switch between day and night
+    switchBackground() {
+        if (this.dayTime) {
+            this.transitionNight();
+        } else {
+            this.transitionDay();
+        }
+        this.dayTime = !this.dayTime;
+    }
+
+    //transition to night background
+    transitionNight() {
+        this.tweens.add({
+            targets: this.backgroundDay,
+            alpha: 0,
+            duration: 2000
+        });
+        this.tweens.add({
+            targets: this.backgroundNight,
+            alpha: 1,
+            duration: 2000
+        });
+    }
+
+    //transition to day background
+    transitionDay() {
+         this.tweens.add({
+            targets: this.backgroundNight,
+            alpha: 0,
+            duration: 2000
+        });
+        this.tweens.add({
+            targets: this.backgroundDay,
+            alpha: 1,
+            duration: 2000
+        });
     }
 
     //increase platform speed
@@ -109,7 +163,7 @@ class Play extends Phaser.Scene{
      //collect bones
      collectBone(dogSprite, bone){
         this.score += 5;
-        this.collectMusic = this.sound.add('collect-music', {volume: 0.05});
+        this.collectMusic = this.sound.add('collect-music', {volume: 0.08});
         this.collectMusic.play();
         bone.destroy();
         this.updateScoreDisplay();
@@ -117,7 +171,8 @@ class Play extends Phaser.Scene{
 
     update(){
         //moving  background
-        this.background.tilePositionX -= 0.2;
+        this.backgroundDay.tilePositionX -= 0.2;
+        this.backgroundNight.tilePositionX -= 0.2;
 
         //random platforms and bones
         this.platforms.children.iterate(child => {
@@ -132,11 +187,12 @@ class Play extends Phaser.Scene{
             }
             platform.body.updateFromGameObject();
         });
+        this.dogSprite.setVelocityX(this.platformSpeed * 50);
 
         //jumping mechanism
         const land = this.dogSprite.body.touching.down;
         if (land){
-            this.dogSprite.setVelocityY(-310);
+            this.dogSprite.setVelocityY(-320);
             this.resetPlatform();
         }
 
@@ -161,11 +217,11 @@ class Play extends Phaser.Scene{
 
         //left and right movement
         if (Phaser.Input.Keyboard.JustDown(keyLEFT) && !land){
-            this.dogSprite.setVelocityX(-800);
+            this.dogSprite.setVelocityX(-1000);
             this.dogSprite.anims.play('dog-left', true);
         }
         else if (Phaser.Input.Keyboard.JustDown(keyRIGHT) && !land){
-            this.dogSprite.setVelocityX(800);
+            this.dogSprite.setVelocityX(1000);
             this.dogSprite.anims.play('dog-right', true);
         }
         else if (!Phaser.Input.Keyboard.JustDown(keyLEFT) && !Phaser.Input.Keyboard.JustDown(keyRIGHT)){
