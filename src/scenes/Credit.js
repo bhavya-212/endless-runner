@@ -46,13 +46,13 @@ class Credit extends Phaser.Scene{
          keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 
          //credit music
-         this.creditMusic = this.sound.add('credit-music', {volume: 0.2, loop: true});
-         this.creditMusic.play();
+         this.menuMusic = this.sound.add('menu-music', {volume: 1, loop: true});
+         this.menuMusic.play();
     }
 
     update(){
         if (Phaser.Input.Keyboard.JustDown(keyUP)){
-            this.creditMusic.stop();
+            this.menuMusic.stop();
             this.scene.start('menuScene');
         }
     }

@@ -37,14 +37,14 @@ class Play extends Phaser.Scene{
         
         //platforms and rainbows
         this.platforms = this.physics.add.staticGroup();
-        this.rainbows = this.physics.add.group({
-            classType: Rainbow
+        this.bones = this.physics.add.group({
+            classType: Bone
         });
-        this.physics.add.collider(this.platforms, this.rainbows);
+        this.physics.add.collider(this.platforms, this.bones);
         for (let i = 0; i < 5; i++){
             const x = Phaser.Math.Between(80, 400);
             const y = 150 * i;
-            const platform = this.platforms.create(x, y, 'bone-platform').setScale(1);
+            const platform = this.platforms.create(x, y, 'rainbow').setScale(0.4);
             platform.body.setSize(platform.width, platform.height);
             platform.body.setOffset(platform.displayWidth*0.25, platform.displayHeight*0.25);
             platform.body.updateFromGameObject();
@@ -89,10 +89,10 @@ class Play extends Phaser.Scene{
     //rainbow over platform
     abovePlatform(sprite){
         const y = sprite.y - sprite.displayHeight;
-        const rainbow = this.rainbows.get(sprite.x, y, 'rainbow');
-        this.add.existing(rainbow);
-        rainbow.body.setSize(rainbow.width, rainbow.height);
-        return rainbow;
+        const bone = this.bones.get(sprite.x, y, 'bone-platform');
+        this.add.existing(bone);
+        bone.body.setSize(bone.width, bone.height);
+        return bone;
     }
     update(){
         //moving  background
@@ -117,7 +117,7 @@ class Play extends Phaser.Scene{
         if (land){
             this.jumpMusic = this.sound.add('jump-music', {volume: 0.05});
             this.jumpMusic.play();
-            this.dogSprite.setVelocityY(-300);
+            this.dogSprite.setVelocityY(-310);
             this.resetPlatform();
         }
 
@@ -142,11 +142,11 @@ class Play extends Phaser.Scene{
 
         //left and right movement
         if (Phaser.Input.Keyboard.JustDown(keyLEFT) && !land){
-            this.dogSprite.setVelocityX(-500);
+            this.dogSprite.setVelocityX(-800);
             this.dogSprite.anims.play('dog-left', true);
         }
         else if (Phaser.Input.Keyboard.JustDown(keyRIGHT) && !land){
-            this.dogSprite.setVelocityX(500);
+            this.dogSprite.setVelocityX(800);
             this.dogSprite.anims.play('dog-right', true);
         }
         else if (!Phaser.Input.Keyboard.JustDown(keyLEFT) && !Phaser.Input.Keyboard.JustDown(keyRIGHT)){

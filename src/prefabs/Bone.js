@@ -1,8 +1,8 @@
-class Rainbow extends Phaser.Physics.Arcade.Sprite{
+class Bone extends Phaser.Physics.Arcade.Sprite{
     constructor(scene, x, y, texture){
         super(scene, x, y, texture);
         scene.add.existing(this);
-        this.setScale(0.1);
+        this.setScale(0.3);
     }
 
     update(){

@@ -15,7 +15,7 @@ let config = {
             gravity: {
                 y: 200
             },
-            debug: false
+            debug: true
         }
     },
     scene: [Menu, Play, Credit, GameOver]
