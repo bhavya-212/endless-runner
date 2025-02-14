@@ -1,6 +1,6 @@
 // name: Bhavya Anil
 // game: Rainbow Bridge
-// hours: 25 hours
+// hours: 27 hours
 // creative tilt: WRITE JUSTIFICATION
 
 'use strict'

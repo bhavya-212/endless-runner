@@ -42,7 +42,7 @@ class GameOver extends Phaser.Scene{
          keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 
          //game over music
-         this.overMusic = this.sound.add('over-music', {volume: 0.2, loop: true});
+         this.overMusic = this.sound.add('over-music', {volume: 0.5, loop: true});
          this.overMusic.play();
     }
 

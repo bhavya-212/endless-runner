@@ -65,8 +65,21 @@ class Play extends Phaser.Scene{
        keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+
+       //platform speed
+       this.platformSpeed = 2;
+       this.timeEvent = this.time.addEvent({
+        delay: 30000,
+        callback: this.increaseSpeed,
+        callbackScope: this,
+        loop: true
+       });
     }
 
+    //increase platform speed
+    increaseSpeed(){
+        this.platformSpeed += 0.5;
+    }
     //increase score
     touchPlatform(dogSprite, platform){
         if(this.dogSprite.body.touching.down && !this.touchedPlatform && !this.gameOver){
@@ -96,6 +109,8 @@ class Play extends Phaser.Scene{
      //collect bones
      collectBone(dogSprite, bone){
         this.score += 5;
+        this.collectMusic = this.sound.add('collect-music', {volume: 0.05});
+        this.collectMusic.play();
         bone.destroy();
         this.updateScoreDisplay();
     }
@@ -108,7 +123,7 @@ class Play extends Phaser.Scene{
         this.platforms.children.iterate(child => {
             const platform = child;
             const screenHeight = this.sys.game.config.height;
-            platform.y += 2;
+            platform.y += this.platformSpeed;
             if (platform.y >= screenHeight){
                 platform.y = -Phaser.Math.Between(50, 100);
                 platform.x = Phaser.Math.Between(80, 400);
@@ -121,8 +136,6 @@ class Play extends Phaser.Scene{
         //jumping mechanism
         const land = this.dogSprite.body.touching.down;
         if (land){
-            this.jumpMusic = this.sound.add('jump-music', {volume: 0.05});
-            this.jumpMusic.play();
             this.dogSprite.setVelocityY(-310);
             this.resetPlatform();
         }
