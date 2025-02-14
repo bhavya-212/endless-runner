@@ -82,7 +82,7 @@ class Menu extends Phaser.Scene{
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 
         //menu music
-        this.menuMusic = this.sound.add('menu-music', {volume: 0.5, loop: true});
+        this.menuMusic = this.sound.add('menu-music', {volume: 1, loop: true});
         this.menuMusic.play();
     }
 

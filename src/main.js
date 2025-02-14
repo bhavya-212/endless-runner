@@ -1,6 +1,6 @@
 // name: Bhavya Anil
 // game: Rainbow Bridge
-// hours: 22 hours
+// hours: 25 hours
 // creative tilt: WRITE JUSTIFICATION
 
 'use strict'
@@ -15,7 +15,7 @@ let config = {
             gravity: {
                 y: 200
             },
-            debug: true
+            debug: false
         }
     },
     scene: [Menu, Play, Credit, GameOver]

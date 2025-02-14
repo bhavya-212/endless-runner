@@ -40,23 +40,18 @@ class Play extends Phaser.Scene{
         this.rainbows = this.physics.add.group({
             classType: Rainbow
         });
+        this.physics.add.collider(this.platforms, this.rainbows);
         for (let i = 0; i < 5; i++){
             const x = Phaser.Math.Between(80, 400);
             const y = 150 * i;
-            const platform = this.platforms.create(x, y, 'bone-platform').setScale(0.5);
-            platform.body.setSize(platform.displayWidth, platform.displayHeight);
-            platform.body.setOffset(-platform.displayWidth/4, -platform.displayHeight/4);
+            const platform = this.platforms.create(x, y, 'bone-platform').setScale(1);
+            platform.body.setSize(platform.width, platform.height);
+            platform.body.setOffset(platform.displayWidth*0.25, platform.displayHeight*0.25);
             platform.body.updateFromGameObject();
-            if (Phaser.Math.Between(0,1) === 0){
-                const rainbow = new Rainbow(this, x, y -10, 'rainbow');
-                this.rainbows.add(rainbow);
-                platform.rainbow = rainbow;
-            }
        }
 
        //dog
-       //this.dogSprite = new Dog(this, 240, 320, 'dog', 0, 'dog-left').setScale(3);
-       this.dogSprite = this.physics.add.sprite(240, 320, 'dog-head').setScale(3);
+       this.dogSprite = this.physics.add.sprite(240, 320, 'dog-head').setScale(2.5);
        this.physics.add.collider(this.platforms, this.dogSprite, this.touchPlatform, null, this);
 
        this.dogSprite.body.checkCollision.up = false;
@@ -86,11 +81,19 @@ class Play extends Phaser.Scene{
         this.touchingPlatform = false;
     }
 
-    //score upsate
+    //score update
     updateScoreDisplay(){
         this.scoreLeft.setText(`Score: ${this.score}`);
     }
 
+    //rainbow over platform
+    abovePlatform(sprite){
+        const y = sprite.y - sprite.displayHeight;
+        const rainbow = this.rainbows.get(sprite.x, y, 'rainbow');
+        this.add.existing(rainbow);
+        rainbow.body.setSize(rainbow.width, rainbow.height);
+        return rainbow;
+    }
     update(){
         //moving  background
         this.background.tilePositionX -= 0.2;
@@ -100,17 +103,11 @@ class Play extends Phaser.Scene{
             const platform = child;
             const screenHeight = this.sys.game.config.height;
             platform.y += 2;
-            if (platform.rainbow){
-                platform.rainbow.y += 1;
-            }
             if (platform.y >= screenHeight){
                 platform.y = -Phaser.Math.Between(50, 100);
                 platform.x = Phaser.Math.Between(80, 400);
-                if (platform.rainbow){
-                    platform.rainbow.y = platform.y - 10;
-                    platform.rainbow.x = platform.x;
-                }
                 platform.body.updateFromGameObject();
+                this.abovePlatform(platform);
             }
             platform.body.updateFromGameObject();
         });
@@ -145,11 +142,11 @@ class Play extends Phaser.Scene{
 
         //left and right movement
         if (Phaser.Input.Keyboard.JustDown(keyLEFT) && !land){
-            this.dogSprite.setVelocityX(-200);
+            this.dogSprite.setVelocityX(-500);
             this.dogSprite.anims.play('dog-left', true);
         }
         else if (Phaser.Input.Keyboard.JustDown(keyRIGHT) && !land){
-            this.dogSprite.setVelocityX(200);
+            this.dogSprite.setVelocityX(500);
             this.dogSprite.anims.play('dog-right', true);
         }
         else if (!Phaser.Input.Keyboard.JustDown(keyLEFT) && !Phaser.Input.Keyboard.JustDown(keyRIGHT)){
