@@ -89,9 +89,9 @@ class Menu extends Phaser.Scene{
     update(){
         if (Phaser.Input.Keyboard.JustDown(keyUP)){
             this.menuMusic.stop();
-            game.settings = {
-                gameTimer: 60000
-            }
+            // game.settings = {
+            //     gameTimer: 60000
+            // }
             this.scene.start('playScene');
         }
         if (Phaser.Input.Keyboard.JustDown(keyDOWN)){

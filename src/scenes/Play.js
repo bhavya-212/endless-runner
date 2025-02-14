@@ -6,6 +6,7 @@ class Play extends Phaser.Scene{
     create(){
         //music
         this.loseMusic = this.sound.add('lose-music', {volume: 0.2});
+        this.loseMusicPlaying = false;
        
         //background image
         this.background = this.add.tileSprite(0, 0, 640, 740, 'background').setOrigin(0,0).setScrollFactor(1,0);
@@ -31,7 +32,7 @@ class Play extends Phaser.Scene{
        //dog
        //this.dogSprite = new Dog(this, 240, 320, 'dog', 0, 'dog-left').setScale(3);
        this.dogSprite = this.physics.add.sprite(240, 320, 'dog-head').setScale(3);
-       this.physics.add.collider(this.platforms, this.dogSprite, this.scoreIncrease, null, this);
+       this.physics.add.collider(this.platforms, this.dogSprite, this.touchPlatform, null, this);
 
        this.dogSprite.body.checkCollision.up = false;
        this.dogSprite.body.checkCollision.left = false;
@@ -44,8 +45,8 @@ class Play extends Phaser.Scene{
        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-        //initialize score
-        this.p1Score = 0;
+        //initialize timer
+        this.score = 0;
 
         //display score
         let scoreConfig = {
@@ -55,47 +56,57 @@ class Play extends Phaser.Scene{
             align: 'right'
         }
 
-        //display timer
-        this.textConfig = this.add.text(borderUISize*16 + borderPadding, borderUISize + borderPadding*4, `Score: ${this.remainingTime / 1000}`, {
-            fontFamily: 'Courier New',
-            fontSize: '20px',
-            color: '#FFFFFF',
-            align: 'right',
-        }).setOrigin(0.5);
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig); 
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, `Score: ${this.score}`, scoreConfig);
         
         //game over flag
         this.gameOver = false;
-        this.remainingTime = game.settings.gameTimer;
 
         //background looping music
-        let backgroundMusic = this.sound.play('background-music', {volume: 0.2, loop: true});
+        this.backgroundMusic = this.sound.add('background-music', {volume: 0.2, loop: true});
+        this.backgroundMusic.play();
+
+        //prevent multiplying scores
+        this.touchingPlatform = false;
+        this.touchedPlatform = false;
        
-        //play clock
-        this.clock = this.time.addEvent({
-            delay: 1000,
-            callback: () => {
-                this.remainingTime -= 1000;
-                if (this.remainingTime <= 0){
-                    this.clock.remove(false);
-                    this.add.text(game.config.width / 2, game.config.height / 2, 'Game Over', scoreConfig).setOrigin(0.5);
-                    this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press up arrow for menu', scoreConfig).setOrigin(0.5);
-                    this.gameOver = true;
-                    this.sound.stopByKey('background-music');
-                }
-            },
-            callbackScope: this,
-            loop: true,
-        });
+        // //play clock
+        // this.clock = this.time.addEvent({
+        //     delay: 1000,
+        //     callback: () => {
+        //         // this.remainingTime += 1000;
+        //         // if (this.remainingTime <= 0){
+        //         //     this.clock.remove(false);
+        //         //     this.add.text(game.config.width / 2, game.config.height / 2, 'Game Over', scoreConfig).setOrigin(0.5);
+        //         //     this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press up arrow for menu', scoreConfig).setOrigin(0.5);
+        //         //     this.gameOver = true;
+        //         //     this.sound.stopByKey('background-music');
+        //         // }
+        //         console.log(this.remainingTime);
+        //         this.updateScoreDisplay();
+        //     },
+        //     callbackScope: this,
+        //     loop: true,
+        // });
     }
 
-    //score
-    scoreIncrease(dogSprite, platform){
-        if (!this.gameOver) {
-            this.p1Score += 10; // Increment score
-            this.scoreLeft.setText(`Score: ${this.p1Score}`); 
-            this.hasLanded = true;
+    //increase score
+    touchPlatform(dogSprite, platform){
+        if(this.dogSprite.body.touching.down && !this.touchedPlatform && !this.gameOver){
+            this.score +=5;
+            console.log(this.score);
+            this.updateScoreDisplay();
+            this.touchingPlatform = true;
         }
+    }
+
+    //reset dog touching platform
+    resetPlatform(){
+        this.touchingPlatform = false;
+    }
+
+    //score upsate
+    updateScoreDisplay(){
+        this.scoreLeft.setText(`Score: ${this.score}`);
     }
 
     update(){
@@ -128,8 +139,7 @@ class Play extends Phaser.Scene{
             this.jumpMusic = this.sound.add('jump-music', {volume: 0.05});
             this.jumpMusic.play();
             this.dogSprite.setVelocityY(-300);
-            this.remainingTime += 4000;
-            console.log(this.remainingTime);
+            this.resetPlatform();
         }
 
         if (this.dogSprite.y <= 0){
@@ -138,10 +148,10 @@ class Play extends Phaser.Scene{
         }
 
         //lose music
-        if (this.dogSprite.y >= this.sys.game.config.height - 50){
-            if(!this.loseMusic.isPlaying){
-                this.loseMusic.play();
-            }
+        if (this.dogSprite.y >= this.sys.game.config.height - 50 && !this.loseMusicPlaying){
+            this.backgroundMusic.stop();
+            this.loseMusic.play();
+            this.loseMusicPlaying = true;
             this.dogSprite.setVelocityX(0);
         }
 
@@ -155,5 +165,8 @@ class Play extends Phaser.Scene{
         else if (!Phaser.Input.Keyboard.JustDown(keyLEFT) && !Phaser.Input.Keyboard.JustDown(keyRIGHT)){
             this.dogSprite.setVelocityX(0);
         }
+
+        //dog touching platform
+        this.touchedPlatform = this.touchingPlatform;
     }
 }
