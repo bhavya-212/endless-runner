@@ -12,29 +12,28 @@ class Play extends Phaser.Scene{
         this.background = this.add.tileSprite(0, 0, 640, 740, 'background').setOrigin(0,0).setScrollFactor(1,0);
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x000000).setOrigin(0,0);
 
-         //initialize timer
-         this.score = 0;
+        //score
+        this.score = 0;
+        this.highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
+        this.gameOver = false;
 
-         //display score
-         let scoreConfig = {
-             fontFamily: 'Courier New',
-             fontSize: '20px',
-             color: '#FFFFFF',
-             align: 'right'
-         }
- 
-         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, `Score: ${this.score}`, scoreConfig);
-         
-         //game over flag
-         this.gameOver = false;
- 
-         //background looping music
-         this.backgroundMusic = this.sound.add('background-music', {volume: 0.2, loop: true});
-         this.backgroundMusic.play();
- 
-         //prevent multiplying scores
-         this.touchingPlatform = false;
-         this.touchedPlatform = false;
+        //display score
+        let scoreConfig = {
+            fontFamily: 'Courier New',
+            fontSize: '20px',
+            color: '#FFFFFF',
+            align: 'right'
+        }
+
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, `Score: ${this.score}`, scoreConfig);
+
+        //background looping music
+        this.backgroundMusic = this.sound.add('background-music', {volume: 0.2, loop: true});
+        this.backgroundMusic.play();
+
+        //prevent multiplying scores
+        this.touchingPlatform = false;
+        this.touchedPlatform = false;
         
         //platforms and rainbows
         this.platforms = this.physics.add.staticGroup();
@@ -45,6 +44,8 @@ class Play extends Phaser.Scene{
             const x = Phaser.Math.Between(80, 400);
             const y = 150 * i;
             const platform = this.platforms.create(x, y, 'bone-platform').setScale(0.5);
+            platform.body.setSize(platform.displayWidth, platform.displayHeight);
+            platform.body.setOffset(-platform.displayWidth/4, -platform.displayHeight/4);
             platform.body.updateFromGameObject();
             if (Phaser.Math.Between(0,1) === 0){
                 const rainbow = new Rainbow(this, x, y -10, 'rainbow');
@@ -130,11 +131,16 @@ class Play extends Phaser.Scene{
 
         //lose music
         if (this.dogSprite.y >= this.sys.game.config.height - 50 && !this.loseMusicPlaying){
+            this.gameOver = true;
             this.backgroundMusic.stop();
             this.loseMusic.play();
             this.loseMusicPlaying = true;
             this.dogSprite.setVelocityX(0);
-            this.scene.start('overScene');
+            if (this.score > this.highScore){
+                this.highScore = this.score;
+                localStorage.setItem('highScore', this.highScore);
+            }
+            this.scene.start('overScene', {score: this.score, highScore: this.highScore});
         }
 
         //left and right movement
