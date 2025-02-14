@@ -146,9 +146,11 @@ class Play extends Phaser.Scene{
         //left and right movement
         if (Phaser.Input.Keyboard.JustDown(keyLEFT) && !land){
             this.dogSprite.setVelocityX(-200);
+            this.dogSprite.anims.play('dog-left', true);
         }
         else if (Phaser.Input.Keyboard.JustDown(keyRIGHT) && !land){
             this.dogSprite.setVelocityX(200);
+            this.dogSprite.anims.play('dog-right', true);
         }
         else if (!Phaser.Input.Keyboard.JustDown(keyLEFT) && !Phaser.Input.Keyboard.JustDown(keyRIGHT)){
             this.dogSprite.setVelocityX(0);
