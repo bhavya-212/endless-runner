@@ -11,6 +11,30 @@ class Play extends Phaser.Scene{
         //background image
         this.background = this.add.tileSprite(0, 0, 640, 740, 'background').setOrigin(0,0).setScrollFactor(1,0);
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x000000).setOrigin(0,0);
+
+         //initialize timer
+         this.score = 0;
+
+         //display score
+         let scoreConfig = {
+             fontFamily: 'Courier New',
+             fontSize: '20px',
+             color: '#FFFFFF',
+             align: 'right'
+         }
+ 
+         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, `Score: ${this.score}`, scoreConfig);
+         
+         //game over flag
+         this.gameOver = false;
+ 
+         //background looping music
+         this.backgroundMusic = this.sound.add('background-music', {volume: 0.2, loop: true});
+         this.backgroundMusic.play();
+ 
+         //prevent multiplying scores
+         this.touchingPlatform = false;
+         this.touchedPlatform = false;
         
         //platforms and rainbows
         this.platforms = this.physics.add.staticGroup();
@@ -44,49 +68,6 @@ class Play extends Phaser.Scene{
        keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-
-        //initialize timer
-        this.score = 0;
-
-        //display score
-        let scoreConfig = {
-            fontFamily: 'Courier New',
-            fontSize: '20px',
-            color: '#FFFFFF',
-            align: 'right'
-        }
-
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, `Score: ${this.score}`, scoreConfig);
-        
-        //game over flag
-        this.gameOver = false;
-
-        //background looping music
-        this.backgroundMusic = this.sound.add('background-music', {volume: 0.2, loop: true});
-        this.backgroundMusic.play();
-
-        //prevent multiplying scores
-        this.touchingPlatform = false;
-        this.touchedPlatform = false;
-       
-        // //play clock
-        // this.clock = this.time.addEvent({
-        //     delay: 1000,
-        //     callback: () => {
-        //         // this.remainingTime += 1000;
-        //         // if (this.remainingTime <= 0){
-        //         //     this.clock.remove(false);
-        //         //     this.add.text(game.config.width / 2, game.config.height / 2, 'Game Over', scoreConfig).setOrigin(0.5);
-        //         //     this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press up arrow for menu', scoreConfig).setOrigin(0.5);
-        //         //     this.gameOver = true;
-        //         //     this.sound.stopByKey('background-music');
-        //         // }
-        //         console.log(this.remainingTime);
-        //         this.updateScoreDisplay();
-        //     },
-        //     callbackScope: this,
-        //     loop: true,
-        // });
     }
 
     //increase score
@@ -153,6 +134,7 @@ class Play extends Phaser.Scene{
             this.loseMusic.play();
             this.loseMusicPlaying = true;
             this.dogSprite.setVelocityX(0);
+            this.scene.start('overScene');
         }
 
         //left and right movement

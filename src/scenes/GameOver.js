@@ -1,0 +1,46 @@
+class GameOver extends Phaser.Scene{
+    constructor(){
+        super("overScene");
+    }
+
+    create(){
+         //sprites
+         this.add.image(game.config.width/2, game.config.height/2, 'rainbow').setOrigin(0.5, 0.7).setScale(1);
+         this.add.image(game.config.width/2, game.config.height/2, 'bone').setOrigin(2.9,1.2).setScale(2);
+         this.add.image(game.config.width/2, game.config.height/2, 'bone').setOrigin(-2,1.2).setScale(2);
+
+        
+         //game over title
+        let titleConfig = {
+            fontFamily: 'Courier New',
+            fontSize: '50px',
+            color: '#FFFFFF',
+            align: 'right',
+            fixedWidth: 0
+        }
+
+        //over text
+        let overConfig = {
+            fontFamily: 'Courier New',
+            fontSize: '20px',
+            color: '#FFFFFF',
+            align: 'right',
+            fixedWidth: 0
+        }
+
+        //credits text
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*4 - borderPadding*2, 'GAME OVER', titleConfig).setOrigin(0.5).setDepth(1);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*4 - borderPadding*2, 'GAME OVER', titleConfig).setOrigin(0.5).setDepth(1).setTint(0xFF0000).setBlendMode('SCREEN');
+        this.add.text(game.config.width/2, game.config.height/2*1.2, 'Press ↑ arrow for menu', overConfig).setOrigin(0.5).setDepth(1);
+      
+
+         //define key
+         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+    }
+
+    update(){
+        if (Phaser.Input.Keyboard.JustDown(keyUP)){
+            this.scene.start('menuScene');
+        }
+    }
+}
