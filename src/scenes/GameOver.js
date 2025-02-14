@@ -31,7 +31,7 @@ class GameOver extends Phaser.Scene{
             fixedWidth: 0
         }
 
-        //credits text
+        //over text
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize*4 - borderPadding*2, 'GAME OVER', titleConfig).setOrigin(0.5).setDepth(1);
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize*4 - borderPadding*2, 'GAME OVER', titleConfig).setOrigin(0.5).setDepth(1).setTint(0xFF0000).setBlendMode('SCREEN');
         this.add.text(game.config.width/2, game.config.height/2 + borderPadding, `Score: ${score}`, overConfig).setOrigin(0.5, -0.3).setDepth(1);
