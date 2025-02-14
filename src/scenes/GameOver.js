@@ -9,8 +9,8 @@ class GameOver extends Phaser.Scene{
          
          //sprites
          this.add.image(game.config.width/2, game.config.height/2, 'rainbow').setOrigin(0.5, 0.7).setScale(1);
-         this.add.image(game.config.width/2, game.config.height/2, 'bone').setOrigin(2.9,1.2).setScale(2);
-         this.add.image(game.config.width/2, game.config.height/2, 'bone').setOrigin(-2,1.2).setScale(2);
+         this.add.image(game.config.width/2, game.config.height/2, 'bone-vertical').setOrigin(2.9,1.2).setScale(2);
+         this.add.image(game.config.width/2, game.config.height/2, 'bone-vertical').setOrigin(-2,1.2).setScale(2);
 
         
          //game over title

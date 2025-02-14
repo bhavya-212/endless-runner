@@ -35,7 +35,7 @@ class Play extends Phaser.Scene{
         this.touchingPlatform = false;
         this.touchedPlatform = false;
         
-        //platforms and rainbows
+        //platforms and bones
         this.platforms = this.physics.add.staticGroup();
         this.bones = this.physics.add.group({
             classType: Bone
@@ -44,7 +44,7 @@ class Play extends Phaser.Scene{
         for (let i = 0; i < 5; i++){
             const x = Phaser.Math.Between(80, 400);
             const y = 150 * i;
-            const platform = this.platforms.create(x, y, 'rainbow').setScale(0.4);
+            const platform = this.platforms.create(x, y, 'rainbow').setScale(0.6);
             platform.body.setSize(platform.width, platform.height);
             platform.body.setOffset(platform.displayWidth*0.25, platform.displayHeight*0.25);
             platform.body.updateFromGameObject();
@@ -53,6 +53,7 @@ class Play extends Phaser.Scene{
        //dog
        this.dogSprite = this.physics.add.sprite(240, 320, 'dog-head').setScale(2.5);
        this.physics.add.collider(this.platforms, this.dogSprite, this.touchPlatform, null, this);
+       this.physics.add.collider(this.dogSprite, this.bones, this.collectBone, null, this);
 
        this.dogSprite.body.checkCollision.up = false;
        this.dogSprite.body.checkCollision.left = false;
@@ -69,9 +70,6 @@ class Play extends Phaser.Scene{
     //increase score
     touchPlatform(dogSprite, platform){
         if(this.dogSprite.body.touching.down && !this.touchedPlatform && !this.gameOver){
-            this.score +=5;
-            console.log(this.score);
-            this.updateScoreDisplay();
             this.touchingPlatform = true;
         }
     }
@@ -86,7 +84,7 @@ class Play extends Phaser.Scene{
         this.scoreLeft.setText(`Score: ${this.score}`);
     }
 
-    //rainbow over platform
+    //bones over platform
     abovePlatform(sprite){
         const y = sprite.y - sprite.displayHeight;
         const bone = this.bones.get(sprite.x, y, 'bone-platform');
@@ -94,11 +92,19 @@ class Play extends Phaser.Scene{
         bone.body.setSize(bone.width, bone.height);
         return bone;
     }
+
+     //collect bones
+     collectBone(dogSprite, bone){
+        this.score += 5;
+        bone.destroy();
+        this.updateScoreDisplay();
+    }
+
     update(){
         //moving  background
         this.background.tilePositionX -= 0.2;
 
-        //random platforms and rainbows
+        //random platforms and bones
         this.platforms.children.iterate(child => {
             const platform = child;
             const screenHeight = this.sys.game.config.height;

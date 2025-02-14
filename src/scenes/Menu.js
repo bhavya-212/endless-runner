@@ -5,7 +5,7 @@ class Menu extends Phaser.Scene{
 
     preload(){
         this.load.image('dog-head', './assets/dog.png');
-        this.load.image('bone', './assets/bone.png');
+        this.load.image('bone-vertical', './assets/bone.png');
         this.load.image('bone-platform', './assets/bone-platform.png');
         this.load.image('rainbow', './assets/rainbow.png');
         this.load.image('background', './assets/background.png');
@@ -39,8 +39,8 @@ class Menu extends Phaser.Scene{
         // dog and bone sprites
         this.add.image(game.config.width/2, game.config.height/2, 'rainbow').setOrigin(0.5, 1).setScale(1);
         this.add.image(game.config.width/2, game.config.height/2, 'dog-head').setOrigin(0.5,-2.7).setScale(2);
-        this.add.image(game.config.width/2, game.config.height/2, 'bone').setOrigin(1.5,-3.8).setScale(1.5);
-        this.add.image(game.config.width/2, game.config.height/2, 'bone').setOrigin(-0.5,-3.8).setScale(1.5);
+        this.add.image(game.config.width/2, game.config.height/2, 'bone-vertical').setOrigin(1.5,-3.8).setScale(1.5);
+        this.add.image(game.config.width/2, game.config.height/2, 'bone-vertical').setOrigin(-0.5,-3.8).setScale(1.5);
 
         //title text
         let titleConfig = {
