@@ -26,7 +26,7 @@ class Play extends Phaser.Scene{
             classType: Bone
         });
         this.physics.add.collider(this.platforms, this.bones);
-        for (let i = 0; i < 5; i++){
+        for (let i = 0; i < 6; i++){
             const x = Phaser.Math.Between(80, 400);
             const y = 150 * i;
             const platform = this.platforms.create(x, y, 'rainbow').setScale(0.6);
@@ -54,7 +54,7 @@ class Play extends Phaser.Scene{
        //platform speed
        this.platformSpeed = 2;
        this.timeEvent = this.time.addEvent({
-        delay: 30000,
+        delay: 20000,
         callback: this.increaseSpeed,
         callbackScope: this,
         loop: true
@@ -89,7 +89,7 @@ class Play extends Phaser.Scene{
 
     // Increase platform speed over time
     increaseSpeed() {
-        this.platformSpeed += 0.5;
+        this.platformSpeed += 0.3;
     }
 
     //switch between day and night

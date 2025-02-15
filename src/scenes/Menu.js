@@ -74,7 +74,9 @@ class Menu extends Phaser.Scene{
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize*1.5 - borderPadding*2, 'RAINBOW BRIDGE', titleConfig).setOrigin(0.5).setDepth(1);
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize*1.5 - borderPadding*2, 'RAINBOW BRIDGE', titleConfig).setOrigin(0.5).setDepth(1).setTint(0xFF0000).setBlendMode('SCREEN');
         this.add.text(game.config.width/2, game.config.height/2, 'Use ←→ arrows to move', menuConfig).setOrigin(0.5).setDepth(1);
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ↑ arrow to start and ↓ for credits', menuConfig).setOrigin(0.5).setDepth(1);
+        this.add.text(game.config.width/2, game.config.height/2*1.07, 'Press keys multiple times', menuConfig).setOrigin(0.5).setDepth(1);
+        this.add.text(game.config.width/2, game.config.height/2*1.15, 'to go higher', menuConfig).setOrigin(0.5).setDepth(1);
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding*4, 'Press ↑ arrow to start and ↓ for credits', menuConfig).setOrigin(0.5).setDepth(1);
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize*-4 - borderPadding*-4, 'Bhavya Anil 2025', nameConfig).setOrigin(0.5).setDepth(1);
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize*-4 - borderPadding*-4, 'Bhavya Anil 2025', nameConfig).setOrigin(0.5).setDepth(1).setTint(0x8B0000).setBlendMode('SCREEN'); 
         
